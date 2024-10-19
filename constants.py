@@ -12,7 +12,8 @@ PLAYER_CONST = {
 
 # Ball constants
 BALL_CONST = {
-    'SPEED': 0,
+    'SPEED': 400,
+    'RADIUS': 6,
 }
 
 # Colors (use RGB format)

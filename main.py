@@ -1,6 +1,9 @@
 import pygame
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_CONST 
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_CONST, BALL_CONST
 from player import Player
+from ball import Ball
+
+
 def main():
     pygame.init()
     delta_time = pygame.time.Clock()
@@ -16,9 +19,12 @@ def main():
 
     # Asigning containers 
     Player.container = (updatable, drawable)
+    Ball.container = (updatable, drawable)
     
     player = Player(COORD_X, COORD_Y)
-
+    ball = Ball(COORD_X, COORD_Y, BALL_CONST['RADIUS'])
+      
+    
     running = True
     while running:
         for event in pygame.event.get():
@@ -32,8 +38,8 @@ def main():
                 
         for obj_draw in drawable:
             obj_draw.draw(screen)    
-        player.update(dt)
-        player.draw(screen)
+        # player.update(dt)
+        # player.draw(screen)
         
         pygame.display.flip()
         dt = delta_time.tick(144)/1000
