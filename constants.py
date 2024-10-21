@@ -4,16 +4,16 @@ SCREEN_HEIGHT = 720
 
 # Player constants
 PLAYER_CONST = {
+    'HEIGHT': 14,
+    'WIDTH': 50,
     'SPEED': 300,
-    'HEIGHT': 7,
-    'WIDTH': 20,
     'LIVES' : 3,
 }
 
 # Ball constants
 BALL_CONST = {
     'SPEED': 400,
-    'RADIUS': 6,
+    'RADIUS': 12,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 }
 
 # Colors (use RGB format)

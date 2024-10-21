@@ -18,8 +18,8 @@ def main():
     drawable = pygame.sprite.Group()
 
     # Asigning containers 
-    Player.container = (updatable, drawable)
-    Ball.container = (updatable, drawable)
+    Player.containers = (updatable, drawable)
+    Ball.containers = (updatable, drawable)
     
     player = Player(COORD_X, COORD_Y)
     ball = Ball(COORD_X, COORD_Y, BALL_CONST['RADIUS'])
@@ -37,10 +37,9 @@ def main():
         screen.fill("black")
                 
         for obj_draw in drawable:
-            obj_draw.draw(screen)    
-        # player.update(dt)
-        # player.draw(screen)
-        
+            obj_draw.draw(screen)
+            
+            
         pygame.display.flip()
         dt = delta_time.tick(144)/1000
         
