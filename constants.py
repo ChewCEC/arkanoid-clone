@@ -1,6 +1,6 @@
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-
+DX_BORDER = 20
 
 # Player constants
 PLAYER_CONST = {

@@ -10,10 +10,11 @@ class Player(SquareShape):
     def rectangle(self):
         # Create and return a pygame.Rect object based on the player's position and size
         return pygame.Rect(self.position.x, self.position.y, self.height, self.width)
-    
+
     def draw(self, screen):
         # Call pygame.draw.rect with the correct arguments
         pygame.draw.rect(screen, "white", self.rectangle())
+    
     
     def move(self, dt):
         forward = pygame.Vector2(1, 0)
