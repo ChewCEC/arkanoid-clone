@@ -45,11 +45,11 @@ class Ball(pygame.sprite.Sprite):
             if left_right:
                 print("collsion left right")
                 self.velocity.x = -self.velocity.x
-
+                
             if top_bottom:
                 print("collsion top bottom")
                 self.velocity.y = -self.velocity.y
-        print("No collision")
+            return True
         return False
 
     def check_collision_walls(self):

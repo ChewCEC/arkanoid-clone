@@ -2,7 +2,7 @@ import pygame
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_CONST, BALL_CONST
 from player import Player
 from ball import Ball
-
+from brick import Brick
 
 def main():
     pygame.init()
@@ -21,14 +21,15 @@ def main():
 
 
     # Asigning containers 
-    Player.containers = (updatable, drawable, collisionable)
+    Player.containers = (updatable, drawable)
     Ball.containers = (updatable, drawable)
     
+    Brick.containers = (drawable, collisionable)
 
     player = Player(COORD_X, COORD_Y)
     ball = Ball(COORD_X, COORD_Y - 10, BALL_CONST['RADIUS'])
     ball.velocity += pygame.Vector2(1,-2)
-    
+    singleBrick = Brick(100, 100)
     
     running = True
     while running:
@@ -45,15 +46,14 @@ def main():
             obj_draw.draw(screen)
         
         for obj_coll in collisionable:
-            ball.check_collision(obj_coll.rectangle())
-            
-            
+            if ball.check_collision(obj_coll.rectangle()):
+               obj_coll.kill() 
+
         ball.check_collision_walls()
-            
+        ball.check_collision(player.rectangle())
         pygame.display.flip()
         dt = delta_time.tick(144)/1000
         
-    
     
     pygame.quit()
     
