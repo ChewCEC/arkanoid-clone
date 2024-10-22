@@ -12,8 +12,8 @@ PLAYER_CONST = {
 
 # Ball constants
 BALL_CONST = {
-    'SPEED': 400,
-    'RADIUS': 12,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    'SPEED': 320,
+    'RADIUS': 12,
 }
 
 # Colors (use RGB format)
@@ -21,4 +21,12 @@ COLORS = {
     'BACKGROUND': (0, 0, 0),
     'PLAYER': (255, 255, 255),
     'BRICK': (255, 0, 0),
+}
+
+BRICKS_CONST = {
+    'OFFSET_X': 4,
+    'OFFSET_Y': 4,
+    'width': 20,
+    'height': 40,
+
 }

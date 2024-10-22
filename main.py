@@ -17,11 +17,14 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     block_grid = pygame.sprite.Group()
-    
+    collisionable = pygame.sprite.Group()
+
+
     # Asigning containers 
-    Player.containers = (updatable, drawable)
+    Player.containers = (updatable, drawable, collisionable)
     Ball.containers = (updatable, drawable)
     
+
     player = Player(COORD_X, COORD_Y)
     ball = Ball(COORD_X, COORD_Y - 10, BALL_CONST['RADIUS'])
     ball.velocity += pygame.Vector2(1,-2)
@@ -41,11 +44,10 @@ def main():
         for obj_draw in drawable:
             obj_draw.draw(screen)
         
-        for obj in block_grid:
-            # ball.check_collision(obj)
-            pass
+        for obj_coll in collisionable:
+            ball.check_collision(obj_coll.rectangle())
             
-        ball.check_collision(player.rectangle())
+            
         ball.check_collision_walls()
             
         pygame.display.flip()
