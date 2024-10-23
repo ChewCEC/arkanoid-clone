@@ -3,6 +3,8 @@ from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_CONST, BALL_CONST
 from player import Player
 from ball import Ball
 from brick import Brick
+from gridbrick import GridBrick
+import constants
 
 def main():
     pygame.init()
@@ -18,19 +20,22 @@ def main():
     drawable = pygame.sprite.Group()
     block_grid = pygame.sprite.Group()
     collisionable = pygame.sprite.Group()
-
+    
 
     # Asigning containers 
     Player.containers = (updatable, drawable)
     Ball.containers = (updatable, drawable)
-    
     Brick.containers = (drawable, collisionable)
 
     player = Player(COORD_X, COORD_Y)
     ball = Ball(COORD_X, COORD_Y - 10, BALL_CONST['RADIUS'])
     ball.velocity += pygame.Vector2(1,-2)
     singleBrick = Brick(100, 100)
+    create_brick_grid = GridBrick(constants.LEVELS[0]) 
     
+
+
+    create_brick_grid.create()        
     running = True
     while running:
         for event in pygame.event.get():

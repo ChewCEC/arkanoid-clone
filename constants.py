@@ -1,7 +1,7 @@
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 DX_BORDER = 20
-
+DY_BORDER = 20
 # Player constants
 PLAYER_CONST = {
     'HEIGHT': 14,
