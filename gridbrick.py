@@ -16,11 +16,13 @@ class GridBrick(pygame.sprite.Sprite):
         border_y = DY_BORDER
 
         # Call pygame.draw.rect with the correct arguments
- 
+        # To change the height and width its necessary to reescalate the layout
+        # (matrix)
+        # + 2 in the loops are the space between bricks
         layout_y = 0       
-        for j in range(border_y, self.avaliable_height , 59 + 2):
+        for j in range(border_y, self.avaliable_height , step_y + 2):
             layout_x = 0
-            for i in range(border_x, self.avaliable_width, 87 + 2):
+            for i in range(border_x, self.avaliable_width, step_x + 2):
                 print(layout_y, layout_x )
                 if self.layout[layout_y][layout_x]:
                     brick = Brick(i, j)

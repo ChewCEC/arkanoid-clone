@@ -26,8 +26,8 @@ COLORS = {
 BRICKS_CONST = {
     'offset_x': 2,
     'offset_y': 2,
-    'width': 84 ,
-    'height': 55,
+    'width': 87 ,
+    'height': 59,
 
 }
 

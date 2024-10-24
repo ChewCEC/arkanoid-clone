@@ -30,10 +30,9 @@ def main():
     player = Player(COORD_X, COORD_Y)
     ball = Ball(COORD_X, COORD_Y - 10, BALL_CONST['RADIUS'])
     ball.velocity += pygame.Vector2(1,-2)
-    singleBrick = Brick(100, 100)
-    create_brick_grid = GridBrick(constants.LEVELS[0]) 
+    create_brick_grid = GridBrick(constants.LEVELS[1]) 
     
-
+    # bricks_to_destroy = sum(constants.LEVELS[1])    
 
     create_brick_grid.create()        
     running = True
