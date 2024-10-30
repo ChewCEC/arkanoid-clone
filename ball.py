@@ -43,11 +43,9 @@ class Ball(pygame.sprite.Sprite):
         # If the distance is less than or equal to the self's radius, there's a collision
         if distance <= self.radius:
             if left_right:
-                print("collsion left right")
                 self.velocity.x = -self.velocity.x
                 
             if top_bottom:
-                print("collsion top bottom")
                 self.velocity.y = -self.velocity.y
             return True
         return False

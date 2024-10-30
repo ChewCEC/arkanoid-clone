@@ -23,7 +23,6 @@ class GridBrick(pygame.sprite.Sprite):
         for j in range(border_y, self.avaliable_height , step_y + 2):
             layout_x = 0
             for i in range(border_x, self.avaliable_width, step_x + 2):
-                print(layout_y, layout_x )
                 if self.layout[layout_y][layout_x]:
                     brick = Brick(i, j)
                 layout_x += 1
