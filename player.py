@@ -4,7 +4,7 @@ from squareshape import SquareShape
 
 class Player(SquareShape):
     def __init__(self, x, y):
-        super().__init__(x, y, PLAYER_CONST["WIDTH"], PLAYER_CONST["HEIGHT"],)
+        super().__init__(x, y, PLAYER_CONST["width"], PLAYER_CONST["height"],)
         self.powerUp = []
     
     def rectangle(self):
@@ -18,7 +18,7 @@ class Player(SquareShape):
     
     def move(self, dt):
         forward = pygame.Vector2(1, 0)
-        self.position += forward * PLAYER_CONST["SPEED"] * dt
+        self.position += forward * PLAYER_CONST["speed"] * dt
     
     def update(self, dt):
         keys = pygame.key.get_pressed()

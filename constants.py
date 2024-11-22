@@ -4,16 +4,16 @@ DX_BORDER = 20
 DY_BORDER = 20
 # Player constants
 PLAYER_CONST = {
-    'HEIGHT': 14,
-    'WIDTH': 50,
-    'SPEED': 300,
-    'LIVES' : 3,
+    'height': 14,
+    'width': 88,
+    'speed': 500,
+    'lives' : 3,
 }
 
 # Ball constants
 BALL_CONST = {
-    'SPEED': 320,
-    'RADIUS': 12,
+    'speed': 320,
+    'radius': 12,
 }
 
 # Colors (use RGB format)

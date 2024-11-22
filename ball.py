@@ -24,7 +24,7 @@ class Ball(pygame.sprite.Sprite):
         
 
     def update(self, dt):
-        self.position += self.velocity * dt * BALL_CONST["SPEED"]
+        self.position += self.velocity * dt * BALL_CONST["speed"]
     
     
     def check_collision(self, square):
@@ -32,29 +32,33 @@ class Ball(pygame.sprite.Sprite):
         closest_x = max(square.left, min(self.position.x, square.right))
         closest_y = max(square.top, min(self.position.y, square.bottom))
 
-        # Calculate the distance between the self's center and this closest point
+        # Calculate the distance between the ball's center and this closest point
         distance_x = self.position.x - closest_x
         distance_y = self.position.y - closest_y
         distance = math.sqrt(distance_x**2 + distance_y**2)
 
-        left_right = (self.position.x < square.left or self.position.x > square.right)
-        top_bottom = (self.position.y < square.top or self.position.y > square.bottom)
-
-        # If the distance is less than or equal to the self's radius, there's a collision
+        # Check if collision happened
         if distance <= self.radius:
-            if left_right:
+            # Create a vector for the collision normal
+            collision_normal = pygame.Vector2(distance_x, distance_y)
+
+            # Only reflect if the collision normal is non-zero
+            if collision_normal.length() != 0:
+                collision_normal = collision_normal.normalize()
+                self.velocity = self.velocity.reflect(collision_normal)
+            else:
+                # If the normal is zero, fall back to a basic velocity reversal
                 self.velocity.x = -self.velocity.x
-                
-            if top_bottom:
                 self.velocity.y = -self.velocity.y
+                
             return True
-        return False
 
     def check_collision_walls(self):
         if self.position.x < DX_BORDER or self.position.x > SCREEN_WIDTH - DX_BORDER:
             self.velocity.x = -self.velocity.x
             
-        if self.position.y < DX_BORDER - 5 or self.position.y > SCREEN_HEIGHT: 
+        if self.position.y < DX_BORDER - 5: 
             self.velocity.y = -self.velocity.y
         
+  
         
