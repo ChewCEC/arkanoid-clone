@@ -1,19 +1,19 @@
 import pygame
+import constants
+
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_CONST, BALL_CONST
 from player import Player
 from ball import Ball
 from brick import Brick
 from gridbrick import GridBrick
-import constants
-from dotenv import load_dotenv
-  
+from game_state import GameState
+
+
 def main():
     GRAY_COLOR = (128, 128, 128, 150)
     WHITE_COLOR = "white"
     BLACK_COLOR = "black"
-
     
-
     pygame.init()
     delta_time = pygame.time.Clock()
     dt = 0
@@ -21,6 +21,7 @@ def main():
     surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
     player_x = SCREEN_WIDTH / 2
     player_y = SCREEN_HEIGHT - 50
+    
     # Creating two containers updatable and drawable
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -31,22 +32,20 @@ def main():
     Ball.containers = (updatable, drawable)
     Brick.containers = (drawable, collisionable)
 
+    # Creating objects game
+    game_state = GameState()
     player = Player(player_x, player_y)
     ball = Ball(player_x, player_y - 19, BALL_CONST['radius'])
     ball.velocity += pygame.Vector2(1,-1)
-    create_brick_grid = GridBrick(constants.LEVELS[level_number]) 
+    create_brick_grid = GridBrick(constants.LEVELS[game_state.level_number])
+    
     # generate brick grid
-    create_brick_grid.create()     
+    create_brick_grid.create()
 
-    def initialVaribles():
-        global level_number, points, lives
-        level_number = 0
-        points = 0 
-        lives = 3
     
     def restartGame():
-        player.position.x, player.position.y = [player_x, player_y]
-        ball.position.x, ball.position.y = [player_x, player_y - 10] 
+        game_state.restartState()
+        resetPlayerPosition()
         
         # reset brick grid
         for obj_coll in collisionable:
@@ -54,51 +53,48 @@ def main():
             
         create_brick_grid = GridBrick(constants.LEVELS[0]) 
         create_brick_grid.create()
-        initialVaribles()
+      
      
     def restartLevel():
         # reset players position
-        player.position.x, player.position.y = [player_x, player_y]
-        ball.position.x, ball.position.y = [player_x, player_y - 10] 
+        resetPlayerPosition() 
         
         # reset brick grid
         for obj_coll in collisionable:
             obj_coll.kill()
         create_brick_grid.create()
         
-        # reset player stats
-        points = 0
-        lives = 3
-        pause = False
-    
-    def nextLevel(level_number):
-        if level_number < len(constants.LEVELS): 
+    def nextLevel():
+        if game_state.level_number < len(constants.LEVELS):
+            game_state.nextLevel()
             # reset players position
-            player.position.x, player.position.y = [player_x, player_y]
-            ball.position.x, ball.position.y = [player_x, player_y - 10] 
-            # reset player stats
-            points = 0
-            lives = 3
-            pause = False
-            create_brick_grid = GridBrick(constants.LEVELS[level_number]) 
+            resetPlayerPosition()
+            create_brick_grid = GridBrick(constants.LEVELS[game_state.level_number]) 
             create_brick_grid.create()
+            
         else:
             drawWin()     
     
+    
+    def resetPlayerPosition():
+        player.position.x, player.position.y = [player_x, player_y]
+        ball.position.x, ball.position.y = [player_x, player_y - 10]
+    
+    
     # Creating player's score
    
-    scoreText = pygame.font.Font('freesansbold.ttf', 28)
+    score_text = pygame.font.Font('freesansbold.ttf', 28)
     def showScore():
-        scoreSurface = scoreText.render(f"Score: {str(points)}", True, 'red')
-        screen.blit(scoreSurface, (20, SCREEN_HEIGHT-50))
+        score_surface = score_text.render(f"Score: {str(game_state.points)}", True, 'red')
+        screen.blit(score_surface, (20, SCREEN_HEIGHT-50))
     
     # Creating players lives
     # unistr = "❤️"
-    livesText = pygame.font.Font("freesansbold.ttf", 28)  # Use the default font with size 28
+    lives_text = pygame.font.Font("freesansbold.ttf", 28)  # Use the default font with size 28
     def showLives():
         # Render and display each life (heart)
-        livesSurface = livesText.render(f"Lives: {lives}", True, 'red')  # Render the heart in red
-        screen.blit(livesSurface, (20, SCREEN_HEIGHT - 90))  # Adjust position for each life
+        lives_surface = lives_text.render(f"Lives: {game_state.lives}", True, 'red')  # Render the heart in red
+        screen.blit(lives_surface, (20, SCREEN_HEIGHT - 90))  # Adjust position for each life
 
     # [TODO] finish funciton
     def drawWin():
@@ -117,7 +113,6 @@ def main():
         return reset_rect
         
     def drawPause():
-        
         font = pygame.font.Font(None, 36)
         pygame.draw.rect(surface, GRAY_COLOR, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT])
         
@@ -135,30 +130,25 @@ def main():
         screen.blit(surface, (0, 0))
         pygame.display.update()
         return reset_rect 
-    
-    def lostLife():
-        player.position.x, player.position.y = [player_x, player_y]
-        ball.position.x, ball.position.y = [player_x, player_y - 10] 
-        
+     
         
 
     running = True
-    pause = False
+    game_state.pause = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False 
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_ESCAPE:
-                    pause = not pause
+                    game_state.pause = not game_state.pause
                     reset_rect = drawPause()
-            if event.type == pygame.MOUSEBUTTONDOWN and pause:
+            if event.type == pygame.MOUSEBUTTONDOWN and game_state.pause:
                 if reset_rect.collidepoint(event.pos):
                     restartLevel()
-                    points = 0
-                    pause = False  # Unpause the game after restarting 
-        if not pause:    
+                    game_state.pause = False  # Unpause the game after restarting 
+                    
+        if not game_state.pause:
             for obj_upt in updatable:
                 obj_upt.update(dt)
             
@@ -168,26 +158,24 @@ def main():
                 obj_draw.draw(screen)
             
             for obj_coll in collisionable:
-                if ball.check_collision(obj_coll.rectangle()):
+                if ball.checkCollision(obj_coll.rectangle()):
                     obj_coll.kill()
-                    points += 100   
+                    game_state.points += 100   
 
             if ball.position.y > SCREEN_HEIGHT + 20:
-                lives -= 1
-                if lives < 1:
+                game_state.lives -= 1
+                if game_state.lives < 1:
                     restartGame()
 
-                lostLife()
+                resetPlayerPosition()
                 
-            ball.check_collision(player.rectangle())
-            ball.check_collision_walls()
+            ball.checkCollision(player.rectangle())
+            ball.checkCollisionWalls()
             showScore()
             showLives()
             
             if len(collisionable) == 0:
-                points = 0
-                level_number += 1
-                nextLevel(level_number)
+                nextLevel()
 
         pygame.display.flip()
         dt = delta_time.tick(144)/1000

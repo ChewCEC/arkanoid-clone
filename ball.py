@@ -27,7 +27,7 @@ class Ball(pygame.sprite.Sprite):
         self.position += self.velocity * dt * BALL_CONST["speed"]
     
     
-    def check_collision(self, square):
+    def checkCollision(self, square):
         # Find the closest point on the rectangle to the center of the self
         closest_x = max(square.left, min(self.position.x, square.right))
         closest_y = max(square.top, min(self.position.y, square.bottom))
@@ -53,12 +53,13 @@ class Ball(pygame.sprite.Sprite):
                 
             return True
 
-    def check_collision_walls(self):
+    def checkCollisionWalls(self):
         if self.position.x < DX_BORDER or self.position.x > SCREEN_WIDTH - DX_BORDER:
             self.velocity.x = -self.velocity.x
             
         if self.position.y < DX_BORDER - 5: 
             self.velocity.y = -self.velocity.y
-        
+    
+    
   
         

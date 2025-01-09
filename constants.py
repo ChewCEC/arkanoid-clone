@@ -7,7 +7,6 @@ PLAYER_CONST = {
     'height': 14,
     'width': 88,
     'speed': 500,
-    'lives' : 3,
 }
 
 # Ball constants
