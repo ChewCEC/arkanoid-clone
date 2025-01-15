@@ -1,7 +1,7 @@
 import pygame
 import constants
 
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_CONST, BALL_CONST
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, BALL_CONST
 from player import Player
 from ball import Ball
 from brick import Brick
@@ -73,7 +73,7 @@ def main():
             create_brick_grid.create()
             
         else:
-            drawWin()     
+            drawWin()  
     
     
     def resetPlayerPosition():
@@ -81,8 +81,6 @@ def main():
         ball.position.x, ball.position.y = [player_x, player_y - 10]
     
     
-    # Creating player's score
-   
     score_text = pygame.font.Font('freesansbold.ttf', 28)
     def showScore():
         score_surface = score_text.render(f"Score: {str(game_state.points)}", True, 'red')
@@ -96,24 +94,8 @@ def main():
         lives_surface = lives_text.render(f"Lives: {game_state.lives}", True, 'red')  # Render the heart in red
         screen.blit(lives_surface, (20, SCREEN_HEIGHT - 90))  # Adjust position for each life
 
-    # [TODO] finish funciton
-    def drawWin():
-        font = pygame.font.Font(None, 36)
-        pygame.draw.rect(surface, GRAY_COLOR, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT])
-        
-        # Render text
-        pause_text = font.render('Game paused: Press escape to resume', True, BLACK_COLOR)
-        restart_text = font.render('Restart', True, BLACK_COLOR)
-        
-        # Blit text onto screen
-        surface.blit(pause_text, (SCREEN_WIDTH // 4 + 20, SCREEN_HEIGHT // 4 + 10))
-        surface.blit(restart_text, (SCREEN_WIDTH // 4 + 90, SCREEN_HEIGHT // 4 + 80))
-        screen.blit(surface, (0, 0))
-        pygame.display.update()
-        return reset_rect
-        
     def drawPause():
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font("freesansbold.ttf", 36)
         pygame.draw.rect(surface, GRAY_COLOR, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT])
         
         # Pause message box
@@ -121,7 +103,7 @@ def main():
                                     [SCREEN_WIDTH // 4 + 90, SCREEN_HEIGHT // 4 + 70, 280, 50], 0, 10)
         
         # Render text
-        pause_text = font.render('Game paused: Press escape to resume', True, BLACK_COLOR)
+        pause_text = font.render('Game paused:\nPress escape to resume', True, BLACK_COLOR)
         restart_text = font.render('Restart', True, BLACK_COLOR)
         
         # Blit text onto screen
@@ -131,7 +113,25 @@ def main():
         pygame.display.update()
         return reset_rect 
      
+    # [TODO] Fixing the displaying of the white box
+    # [TODO] Make New Game after [enter] is pressed 
+    def drawWin():
+        font = pygame.font.Font("freesansbold.ttf", 32)
+        pygame.draw.rect(surface, GRAY_COLOR, [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT])
+        # Pause message box
+        win_rect = pygame.draw.rect(surface, WHITE_COLOR, 
+                                    [SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3, 280], 0, 10)
         
+        win_text = font.render('YOU WIN!', True, BLACK_COLOR)
+        new_game_text = font.render('Press [enter] to start a new game', True, BLACK_COLOR)
+        
+        surface.blit(win_text, (SCREEN_WIDTH // 4 + 90, SCREEN_HEIGHT // 4 + 70))
+        surface.blit(new_game_text, (SCREEN_WIDTH // 4 + 90, SCREEN_HEIGHT // 4 + 100))
+        
+        screen.blit(surface, (0, 0))
+        
+        pygame.display.update()
+        return win_rect    
 
     running = True
     game_state.pause = False
@@ -149,6 +149,7 @@ def main():
                     game_state.pause = False  # Unpause the game after restarting 
                     
         if not game_state.pause:
+            
             for obj_upt in updatable:
                 obj_upt.update(dt)
             
@@ -173,6 +174,10 @@ def main():
             ball.checkCollisionWalls()
             showScore()
             showLives()
+            
+            # if game_state.points == 100:
+            #     game_state.pause = not game_state.pause  
+            #     drawWin()
             
             if len(collisionable) == 0:
                 nextLevel()

@@ -1,5 +1,5 @@
 import pygame, math
-from constants import BALL_CONST, SCREEN_WIDTH, SCREEN_HEIGHT, DX_BORDER
+from constants import BALL_CONST, SCREEN_WIDTH, DX_BORDER
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x, y, radius):
@@ -21,7 +21,7 @@ class Ball(pygame.sprite.Sprite):
             radius = self.radius, 
             width = 1 
             )
-        
+    
 
     def update(self, dt):
         self.position += self.velocity * dt * BALL_CONST["speed"]
@@ -46,6 +46,9 @@ class Ball(pygame.sprite.Sprite):
             if collision_normal.length() != 0:
                 collision_normal = collision_normal.normalize()
                 self.velocity = self.velocity.reflect(collision_normal)
+                
+                overlap = self.radius - distance
+                self.position += collision_normal * overlap
             else:
                 # If the normal is zero, fall back to a basic velocity reversal
                 self.velocity.x = -self.velocity.x
